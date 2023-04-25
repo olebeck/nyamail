@@ -27,6 +27,7 @@ def get_users(db):
     cursor.execute("SELECT email FROM virtual_users;")
     for email in cursor:
         yield email[0]
+    cursor.close()
 
 def add_user(db, email, password):
     cursor = db.cursor()
@@ -34,9 +35,10 @@ def add_user(db, email, password):
         INSERT INTO virtual_users
         (domain_id, password , email)
         VALUES
-        ('1', ENCRYPT(%s, CONCAT('\$6\$', SUBSTRING(SHA(RAND()), -16))), %s);s
+        ('1', ENCRYPT(%s, CONCAT('\$6\$', SUBSTRING(SHA(RAND()), -16))), %s);
     """, (password, email))
     db.commit()
+    cursor.close()
 
 def change_password(db, email, password):
     cursor = db.cursor()
@@ -48,6 +50,7 @@ def change_password(db, email, password):
         WHERE email = %s;
     """, (password, email))
     db.commit()
+    cursor.close()
 
 def user_subcommand(args, db):
     if args.action == "list":
