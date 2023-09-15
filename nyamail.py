@@ -64,7 +64,7 @@ def user_subcommand(args, db):
         add_user(db, args.email, password)
     elif args.action == "change-password":
         password = input_password()
-        add_user(db, args.email, password)
+        change_password(db, args.email, password)
 
 def main():
     p = argparse.ArgumentParser()
